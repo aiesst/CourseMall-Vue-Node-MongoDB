@@ -23,6 +23,9 @@
             <span>订单号：{{orderId}}</span>
             <span>订单总金额：{{orderTotal | currency('￥')}}</span>
           </p>
+          <p>
+            <span style="color:red">具体交易和疑问请联系店长QQ:332628300</span>
+          </p>
           <div class="order-create-btn-wrap">
             <div class="btn-l-wrap">
 

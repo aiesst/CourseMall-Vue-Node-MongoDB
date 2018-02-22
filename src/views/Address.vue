@@ -138,9 +138,9 @@
           </div>
           <div class="next-btn-wrap">
 
-            <router-link class="btn btn--m btn--red"
-                         v-bind:to="{path:'orderConfirm',query:{'addressId':selectedAddrId}}">下一步
-            </router-link>
+            <div class="btn-wrap">
+              <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="next">下一步</a>
+            </div>
           </div>
         </div>
       </div>
@@ -230,6 +230,10 @@
       this.init();
     },
     computed: {
+      checkedCount(){
+        //遍历地址条数
+        return this.addressList.length;
+      },
       addressListFilter(){
         return this.addressList.slice(0, this.limit);//截取三条信息
       }
@@ -242,12 +246,15 @@
     },
     methods: {
       init(){
+
         axios.get("/users/addressList").then((response) => {
           let res = response.data;
           this.addressList = res.result;//拿到地址列表信息数据
-        })
+          console.log(this.addressList.length);
+        });
       },
       expand(){//展开和收缩功能
+        console.log(this.addressList.length);
         if (this.limit == 3) {
           this.limit = this.addressList.length;
         } else {
@@ -297,7 +304,7 @@
         axios.post("/users/addAddress", {
           phoneNum: this.phoneNum,
           email: this.email,
-          userName:this.userName,
+          userName: this.userName,
 
         }).then((response) => {
           let res = response.data;
@@ -309,6 +316,14 @@
           }
         })
 
+      },
+      next(){
+        this.$router.push('/address?addressId=selectedAddrId');
+        if (this.checkedCount > 0) {
+          this.$router.push({
+            path: "/orderConfirm"
+          });
+        }
       }
     }
 
